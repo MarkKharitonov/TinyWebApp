@@ -1,0 +1,8 @@
+﻿<Project>
+  <PropertyGroup>
+    <WorkspaceRoot>$(MSBuildThisFileDirectory)</WorkspaceRoot>
+    <OutDir Condition="'$(OutDir)' != ''" >$([MSBuild]::EnsureTrailingSlash($(OutDir)))</OutDir>
+    <OutDir Condition="'$(OutDir)' == ''">$(WorkspaceRoot)bin\</OutDir>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>  
+</Project>

@@ -1,0 +1,7 @@
+<Project ToolsVersion="Current">
+  <PropertyGroup>
+    <MasterProject>..\TinyWebApp\TinyWebApp.csproj</MasterProject>
+    <MasterAsmName>TinyWebApp</MasterAsmName>
+  </PropertyGroup>
+  <Import Project="$(MSBuildThisFileDirectory)Mvc.targets" />
+</Project>

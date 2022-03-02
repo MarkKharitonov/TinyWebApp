@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <OutputPath>bin</OutputPath>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <MasterDllPathPrefix>$(MasterProject)\..\obj\$(Configuration)\$(MasterAsmName)</MasterDllPathPrefix>
+    <MvcBuildViewsOutput>$(MasterDllPathPrefix).MvcBuildViews</MvcBuildViewsOutput>
+  </PropertyGroup>
+
+  <!-- These two are expected by Visual Studio. Not needed when building with msbuild on the console. -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'" />
+
+  <ItemGroup>
+    <ProjectReference Include="$(MasterProject)" />
+
+    <MvcBuildViewsInput Include="$(MasterProject)\..\**\*.aspx" />
+    <MvcBuildViewsInput Include="$(MasterProject)\..\**\*.cshtml" />
+    <MvcBuildViewsInput Include="$(MasterDllPathPrefix).dll" />
+    <MvcBuildViewsInput Include="$(MasterProject)\..\web.config" />
+    <MvcBuildViewsInput Include="$(MSBuildThisFileFullPath)" />
+  </ItemGroup>
+
+  <Import Project="$(MSBuildBinPath)\Microsoft.Common.CurrentVersion.targets" />
+
+  <!-- This target is expected by Visual Studio. Not needed when building with msbuild on the console. -->
+  <Target Name="CreateManifestResourceNames" />
+  
+  <Target Name="Build"
+          DependsOnTargets="ResolveProjectReferences"
+          Condition="'$(MasterProject)' != '' And '$(MasterAsmName)' != ''"
+          Inputs="@(MvcBuildViewsInput)"
+          Outputs="$(MvcBuildViewsOutput)">
+    <PropertyGroup>
+      <WebProjectOutputDir>$(OutDir)_PublishedWebsites\%(ProjectReference.Filename)</WebProjectOutputDir>
+    </PropertyGroup>
+    <Message Text="Running AspNetCompiler for $(WebProjectOutputDir)" Importance="High" />
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+    <WriteLinesToFile File="$(MvcBuildViewsOutput)" Lines="@(MvcBuildViewsInput)" Overwrite="True"/>
+  </Target>
+</Project>
